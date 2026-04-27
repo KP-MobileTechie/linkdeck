@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fafafa;            /* zinc-50 */
+  --card: #ffffff;
+  --border: #e4e4e7;        /* zinc-200 */
+  --fg: #18181b;            /* zinc-900 */
+  --fg-dim: #71717a;        /* zinc-500 */
+  --accent: #4f46e5;        /* indigo-600 */
+  --accent-soft: #eef2ff;   /* indigo-50 */
+  --danger: #dc2626;
+  --ok: #16a34a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #09090b;          /* zinc-950 */
+    --card: #18181b;        /* zinc-900 */
+    --border: #27272a;      /* zinc-800 */
+    --fg: #fafafa;
+    --fg-dim: #a1a1aa;      /* zinc-400 */
+    --accent: #818cf8;      /* indigo-400 */
+    --accent-soft: #1e1b4b; /* indigo-950 */
+    --danger: #f87171;
+    --ok: #4ade80;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-dim: var(--fg-dim);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+input, select {
+  accent-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
