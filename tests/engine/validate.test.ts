@@ -34,3 +34,19 @@ describe('ipIsPublic', () => {
     }
   });
 });
+
+describe('ipIsPublic — boundaries', () => {
+  it('accepts addresses just outside the private ranges', () => {
+    for (const ip of [
+      '9.255.255.255', '11.0.0.0', '172.15.255.255', '172.32.0.0',
+      '192.167.255.255', '193.168.1.1',
+    ]) {
+      expect(ipIsPublic(ip), ip).toBe(true);
+    }
+  });
+
+  it('treats IPv4-mapped public addresses as public', () => {
+    expect(ipIsPublic('::ffff:8.8.8.8')).toBe(true);
+    expect(ipIsPublic('::ffff:93.184.216.34')).toBe(true);
+  });
+});
