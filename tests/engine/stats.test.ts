@@ -27,3 +27,15 @@ describe('fillDays', () => {
     ]);
   });
 });
+
+describe('fillDays — DST immunity', () => {
+  it('steps whole UTC days across a DST transition (UTC has no DST)', () => {
+    // Window spanning the EU spring-forward (Mar 29 2026): fixed 24h UTC steps
+    // must still land on consecutive calendar days.
+    const today = new Date('2026-03-31T12:00:00Z');
+    const out = fillDays([], 5, today);
+    expect(out.map((r) => r.day)).toEqual([
+      '2026-03-27', '2026-03-28', '2026-03-29', '2026-03-30', '2026-03-31',
+    ]);
+  });
+});
