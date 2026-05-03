@@ -145,3 +145,13 @@ describe('aggregates', () => {
     ]));
   });
 });
+
+describe('recordClick — repeated', () => {
+  it('accumulates the counter once per click', async () => {
+    const link = await createLink(db, BASE);
+    for (let i = 0; i < 3; i++) {
+      await recordClick(db, { linkId: link!.id, referrerHost: null, device: 'desktop', browser: 'Chrome', country: null });
+    }
+    expect((await getLinkBySlug(db, link!.slug))!.clickCount).toBe(3);
+  });
+});
