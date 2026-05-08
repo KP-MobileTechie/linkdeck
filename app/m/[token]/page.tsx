@@ -59,6 +59,12 @@ export default async function ManagePage({ params }: { params: Promise<{ token: 
         <QrCode value={shortUrl} />
       </header>
 
+      {link.clickCount === 0 && (
+        <p className="card border-dashed p-4 text-center text-sm text-fg-dim">
+          No clicks yet — share <span className="font-mono">{shortUrl}</span> or print the QR code.
+        </p>
+      )}
+
       <StatsCharts days7={days7} days30={days30} devices={devices} />
 
       <div className="grid gap-4 md:grid-cols-2">

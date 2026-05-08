@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { createLinkAction, checkSlugAction, type CreateResult } from '@/app/actions';
 import { CopyButton } from './CopyButton';
 import { QrCode } from './QrCode';
@@ -21,7 +22,12 @@ export function CreateCard() {
 
   if (result?.ok) {
     return (
-      <div className="card flex w-full max-w-lg flex-col items-center gap-5 p-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+        className="card flex w-full max-w-lg flex-col items-center gap-5 p-8 text-center"
+      >
         <h2 className="text-xl font-semibold">Your link is live</h2>
         <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-accent-soft px-4 py-3">
           <span className="truncate font-mono text-sm">{result.shortUrl}</span>
@@ -37,7 +43,7 @@ export function CreateCard() {
           </div>
         </div>
         <a href="/" className="text-sm text-accent underline-offset-2 hover:underline">Shorten another</a>
-      </div>
+      </motion.div>
     );
   }
 
