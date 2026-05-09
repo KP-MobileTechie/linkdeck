@@ -1,6 +1,7 @@
 'use client';
 
-import { useActionState, useState, useEffect } from 'react';
+import { useActionState, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { createLinkAction, checkSlugAction, type CreateResult } from '@/app/actions';
 import { CopyButton } from './CopyButton';
@@ -10,8 +11,6 @@ export function CreateCard() {
   const [result, formAction, pending] = useActionState<CreateResult | null, FormData>(createLinkAction, null);
   const [slugNote, setSlugNote] = useState<string | null>(null);
   const [showOptions, setShowOptions] = useState(false);
-  const [tzOffset, setTzOffset] = useState(0);
-  useEffect(() => { setTzOffset(new Date().getTimezoneOffset()); }, []);
 
   async function onSlugBlur(e: React.FocusEvent<HTMLInputElement>) {
     const slug = e.target.value.trim();
@@ -42,13 +41,20 @@ export function CreateCard() {
             <CopyButton value={result.mgmtUrl!} />
           </div>
         </div>
-        <a href="/" className="text-sm text-accent underline-offset-2 hover:underline">Shorten another</a>
+        <Link href="/" className="text-sm text-accent underline-offset-2 hover:underline">Shorten another</Link>
       </motion.div>
     );
   }
 
   return (
-    <form action={formAction} className="card flex w-full max-w-lg flex-col gap-4 p-8">
+    <form
+      action={formAction}
+      onSubmit={(e) => {
+        const tz = e.currentTarget.elements.namedItem('tzOffset');
+        if (tz instanceof HTMLInputElement) tz.value = String(new Date().getTimezoneOffset());
+      }}
+      className="card flex w-full max-w-lg flex-col gap-4 p-8"
+    >
       <div>
         <h1 className="text-3xl font-bold tracking-tight">linkdeck</h1>
         <p className="mt-1 text-sm text-fg-dim">Short links with private click analytics. No account needed.</p>
@@ -85,7 +91,7 @@ export function CreateCard() {
             <label className="flex flex-col gap-1">
               <span className="text-sm font-medium">Expires <span className="text-fg-dim">(optional)</span></span>
               <input name="expiresAt" type="datetime-local" className="rounded-xl border border-line bg-bg px-3 py-2.5 text-sm" />
-              <input type="hidden" name="tzOffset" value={tzOffset} />
+              <input type="hidden" name="tzOffset" defaultValue="0" />
             </label>
             <label className="flex flex-col gap-1">
               <span className="text-sm font-medium">Max clicks <span className="text-fg-dim">(optional)</span></span>

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { PGlite } from '@electric-sql/pglite';
-import { drizzle } from 'drizzle-orm/pglite';
+import { drizzle, type PgliteDatabase } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
 import * as schema from '@/lib/db/schema';
 import type { DB } from '@/lib/db/client';
@@ -15,8 +15,9 @@ let db: DB;
 
 beforeAll(async () => {
   const client = new PGlite();
-  db = drizzle(client, { schema }) as unknown as DB;
-  await migrate(db as any, { migrationsFolder: './drizzle' });
+  const pgliteDb = drizzle(client, { schema });
+  db = pgliteDb as unknown as DB;
+  await migrate(pgliteDb as PgliteDatabase<typeof schema>, { migrationsFolder: './drizzle' });
 });
 
 beforeEach(async () => {
