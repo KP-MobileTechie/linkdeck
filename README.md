@@ -5,7 +5,7 @@ Short links with private click analytics. Paste a URL, get a short link + QR cod
 <!-- TODO(manual): record demo GIF and replace this line -->
 ![demo](docs/demo.gif)
 
-**Live demo:** https://linkdeck.vercel.app <!-- update after deploy -->
+**Live demo:** https://linkdeck-krunal-patels-projects.vercel.app
 
 ## Features
 
