@@ -1,13 +1,20 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { createLinkAction, checkSlugAction, type CreateResult } from '@/app/actions';
 import { CopyButton } from './CopyButton';
 import { QrCode } from './QrCode';
 
 export function CreateCard() {
+  // "Shorten another" resets the flow by remounting the form (key change) —
+  // useActionState has no reset API, and client-side <Link href="/"> on the
+  // same route preserves state, leaving the success card stuck.
+  const [formKey, setFormKey] = useState(0);
+  return <CreateCardForm key={formKey} onReset={() => setFormKey((k) => k + 1)} />;
+}
+
+function CreateCardForm({ onReset }: { onReset: () => void }) {
   const [result, formAction, pending] = useActionState<CreateResult | null, FormData>(createLinkAction, null);
   const [slugNote, setSlugNote] = useState<string | null>(null);
   const [showOptions, setShowOptions] = useState(false);
@@ -41,7 +48,9 @@ export function CreateCard() {
             <CopyButton value={result.mgmtUrl!} />
           </div>
         </div>
-        <Link href="/" className="text-sm text-accent underline-offset-2 hover:underline">Shorten another</Link>
+        <button type="button" onClick={onReset} className="text-sm text-accent underline-offset-2 hover:underline">
+          Shorten another
+        </button>
       </motion.div>
     );
   }
